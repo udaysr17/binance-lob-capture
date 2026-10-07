@@ -1,0 +1,10 @@
+build/
+build-*/
+*.o
+*.a
+*.so
+.env
+output/
+*.csv
+!samples/*.csv
+!tests/fixtures/*.csv
