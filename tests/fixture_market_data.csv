@@ -1,0 +1,3 @@
+stream_kind,exchange,symbol,conn_epoch,shard_id,message_id,recv_sec,recv_nsec,exch_ts,payload
+depth5,SPOT,BTCUSDT,1,1,1,100,0,0,"{""lastUpdateId"":10,""bids"":[[""100"",""1""]],""asks"":[[""110"",""1""]]}"
+depth_diff,SPOT,BTCUSDT,1,1,2,101,0,0,"{""e"":""depthUpdate"",""E"":1,""s"":""BTCUSDT"",""U"":11,""u"":12,""b"":[[""100"",""2""]],""a"":[]}"

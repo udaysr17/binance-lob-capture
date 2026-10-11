@@ -32,9 +32,28 @@ add_library(binance_core STATIC
   src/csv_writer.cpp
   src/csv_reader.cpp
   src/output_file.cpp
+  src/json_scan.cpp
+  src/order_book.cpp
+  src/metrics.cpp
+  src/event_processor.cpp
+  src/replay.cpp
 )
 target_include_directories(binance_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(binance_core PUBLIC project_options)
+
+add_executable(binance_capture src/main.cpp src/websocket_session.cpp)
+
+find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(ZLIB REQUIRED)
+
+target_link_libraries(binance_capture PRIVATE 
+  binance_core
+  Threads::Threads 
+  OpenSSL::SSL 
+  OpenSSL::Crypto 
+  ZLIB::ZLIB
+)
 
 enable_testing()
 add_subdirectory(tests)

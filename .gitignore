@@ -1,5 +1,7 @@
 build/
 build-*/
+.cache/
+CMakeFiles/
 *.o
 *.a
 *.so
@@ -8,3 +10,4 @@ output/
 *.csv
 !samples/*.csv
 !tests/fixtures/*.csv
+!tests/fixture_*.csv
