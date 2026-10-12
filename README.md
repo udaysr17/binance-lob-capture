@@ -50,7 +50,7 @@ warnings with GCC 12 and Clang 15. Sanitizer build: `-DBINANCE_SANITIZE=ON` (Add
 | Flag | Meaning |
 |---|---|
 | `--venue spot\|usdm` | Venue (lowercase). |
-| `--symbols A,B,...` | Comma-separated, uppercase, no spaces. At most 20 symbols (kMaxSymbols = 20; 20 symbols = 60 streams, within Binance limit of 1024 streams per connection). |
+| `--symbol A` | symbol (uppercase). |
 | `--output-dir DIR` | Live capture: output directory (created if missing). |
 | `--duration SEC` | Stop after SEC seconds. Without it, runs until SIGINT/SIGTERM. |
 | `--replay FILE` | Replay mode. Reads only `FILE`; opens no sockets. Venue and symbol are taken from the rows. |
