@@ -40,9 +40,6 @@ warnings with GCC 12 and Clang 15. Sanitizer build: `-DBINANCE_SANITIZE=ON` (Add
 # live capture, one symbol, spot, 2 minutes
 ./build/binance_capture --venue spot --symbols BTCUSDT --output-dir ./output --duration 120
 
-# several symbols on one connection
-./build/binance_capture --venue spot --symbols BTCUSDT,ETHUSDT --output-dir ./output
-
 # USD-M futures
 ./build/binance_capture --venue usdm --symbols BTCUSDT --output-dir ./output
 
@@ -206,7 +203,7 @@ recover the true deeper book (see *Known limitations*).
   reader, which is acceptable at this rate.
 - **Shutdown:** SIGINT/SIGTERM set an atomic flag; the read loop uses a short timeout so it notices the flag,
   closes the WebSocket, flushes and closes files and prints the metrics summary.
-- **Memory limits:** bounded read buffer, bounded symbol count (`kMaxSymbols = 20`) and URL length.
+- **Memory limits:** bounded read buffer, bounded URL length.
 
 ## Metrics
 
@@ -265,15 +262,6 @@ Message mix in that run: 579 `depth_diff`, 580 `depth5`, 1653 `trade` (2812 mess
 (43 applied diffs, 1 seed, 579 reconciles); 536 stale diffs; 0 gaps, 0 parse errors, 0 decimal rejects, 0 invariant
 violations, 0 reconnects.
 
-## Measurements
-
-| Metric | Value |
-|---|---|
-| depth5 interval, spot / USD-M (measured on 2026-10-11: 60 s spot, 15 s USD-M) | 100.2 ms / 107.7 ms |
-| Replay throughput | ~450,000–520,000 msgs/s (measured on 98,420 msgs / 44.8 MB file: 0.19–0.22 s wall time, 5.2 MB RSS on Apple Silicon Mac / Docker Ubuntu 22.04 aarch64 native) |
-| Heap allocations per message in replay | 0 (none observed; measured via Valgrind memcheck two-file differential on 2,812 vs 98,420 messages: 36 allocs in both, Δ = 0) |
-| Order-book rows with a padded 5th level (sample run) | bid 0%, ask 0% (0 of 623 rows) |
-
 ## Known limitations
 
 - Levels deeper than the 5th are only known after a snapshot or diff has shown them; after a top-level cancel
@@ -282,20 +270,3 @@ violations, 0 reconnects.
   market-data CSV alone.
 - Single connection (`shard_id` is always 0); no sharding.
 - Wall-clock timestamps can step backwards (counted, not corrected).
-
-## How to Submit on GitHub
-
-```bash
-git init
-git add .
-git commit -m "Initial submission: Binance WebSocket capture + LOB"
-git remote add origin https://github.com/<your-username>/binance-lob-capture.git
-git branch -M main
-git push -u origin main
-git tag -a v1.0.0 -m "Submission v1.0.0"
-git push origin v1.0.0
-```
-
-`.gitignore` excludes `build/`, `*.csv`, `*.o`, `*.a`, `*.so` and `.env`, with the exception `!samples/*.csv` (and
-`!tests/fixture_*.csv`) so the sample run and test fixtures are committed. Never commit credentials or private keys;
-configuration, if ever needed, goes in environment variables or a `.env.example` template with no real values.
